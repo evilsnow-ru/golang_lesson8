@@ -95,12 +95,14 @@ func newExecutor(maxErrors, maxWorkers, buffersSize int) (Executor, error) {
 
 	tasksChan := make(chan UnitOfWork, buffersSize)
 	errorsChan := make(chan error, maxErrors)
+	controlChan := make(chan struct{})
 
 	executor := &errorsAwareExecutor{
 		workers:       maxWorkers,
 		maxErrors:     maxErrors,
 		tasksChannel:  tasksChan,
 		errorsChannel: errorsChan,
+		controlChan:   controlChan,
 	}
 
 	startErrorsController(executor)
