@@ -56,6 +56,7 @@ func (e *errorsAwareExecutor) Shutdown(awaitFinish bool) bool {
 	e.lock.Unlock()
 
 	close(e.tasksChannel)
+	close(e.controlChan)
 
 	if awaitFinish {
 		e.wg.Wait()
